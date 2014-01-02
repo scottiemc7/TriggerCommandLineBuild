@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriggerCommandLineConsole", "TriggerCommandLineConsole\TriggerCommandLineConsole.csproj", "{CE93FD15-06BE-4034-AB65-1B6827A638E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriggerCommandLineConsoleTest", "TriggerCommandLineConsoleTest\TriggerCommandLineConsoleTest.csproj", "{B6964E34-3C7E-4B4F-9E6D-E7F772F3E494}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE93FD15-06BE-4034-AB65-1B6827A638E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE93FD15-06BE-4034-AB65-1B6827A638E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE93FD15-06BE-4034-AB65-1B6827A638E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE93FD15-06BE-4034-AB65-1B6827A638E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6964E34-3C7E-4B4F-9E6D-E7F772F3E494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6964E34-3C7E-4B4F-9E6D-E7F772F3E494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6964E34-3C7E-4B4F-9E6D-E7F772F3E494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6964E34-3C7E-4B4F-9E6D-E7F772F3E494}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
