@@ -18,7 +18,7 @@ A [TeamCity](http://www.jetbrains.com/teamcity/ "TeamCity") plugin for the [Trig
 4.  Start the TeamCity server: the plugin files will be unpacked and processed automatically.  
 
 ## Build:
-1.  Update path.variable.teamcitydistribution property in `build.properties` to point to your local TeamCity install  
+1.  Update path.variable.teamcitydistribution property in `build.properties` to point to your local TeamCity install.  
 2.  Run Ant against the "dist" target.
 
 ## License:
