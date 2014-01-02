@@ -1,4 +1,4 @@
-TriggerStandaloneBuild
+Trigger Command-Line Build
 ======================
 A [TeamCity](http://www.jetbrains.com/teamcity/ "TeamCity") plugin for the [Trigger.io](http://www.trigger.io "Trigger.io") command-line build tools
 
@@ -8,8 +8,8 @@ A [TeamCity](http://www.jetbrains.com/teamcity/ "TeamCity") plugin for the [Trig
 ![Screenshot png](https://github.com/scottiemc7/TriggerCommandLineBuild/raw/master/Screenshot.png "Command-Line Build Runner")
 
 ## Agent Requirements:
-Windows with .Net Framework 4.5  
-[Trigger.io toolkit for windows](https://trigger.io/forge/toolkit/ "Trigger Toolkit")
+*Windows with .Net Framework 4.5  
+*[Trigger.io toolkit for windows](https://trigger.io/forge/toolkit/ "Trigger Toolkit")
 
 ## Plugin Installation: 
 1.Download [triggercommandlinebuild.zip](https://github.com/scottiemc7/TriggerCommandLineBuild/raw/master/triggercommandlinebuild.zip "Plugin")  
