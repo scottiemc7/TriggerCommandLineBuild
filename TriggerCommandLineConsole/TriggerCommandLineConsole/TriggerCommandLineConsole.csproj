@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineBuilder.cs" />
+    <Compile Include="DirectoryMover.cs" />
     <Compile Include="IProcessWrapper.cs" />
     <Compile Include="IProcessWrapperFactory.cs" />
     <Compile Include="Options.cs" />

@@ -92,21 +92,31 @@ namespace TriggerCommandLineConsole
 			if (options.iOS)
 			{
 				ProgressMessage("Begin iOS build");
-				if (!builder.BuildiOS(iosRes))
+				using (DirectoryMover m = new DirectoryMover(options.SrcPath, options.iOSIgnore))
 				{
-					ProgressEndBuild(false, "iOS build failed");
-					return;
-				}
+					bool ret = builder.BuildiOS(iosRes);
+					Console.WriteLine(builder.LastBuildOutput);
+					if (!ret)
+					{
+						ProgressEndBuild(false, "iOS build failed");
+						return;
+					}//end if
+				}//end using
 			}//end if
 
 			if (options.Android)
 			{
 				ProgressMessage("Begin Android build");
-				if (!builder.BuildAndroid(andRes))
+				using (DirectoryMover m = new DirectoryMover(options.SrcPath, options.AndroidIgnore))
 				{
-					ProgressEndBuild(false, "Android build failed");
-					return;
-				}
+					bool ret = builder.BuildAndroid(andRes);
+					Console.WriteLine(builder.LastBuildOutput);
+					if (!ret)
+					{
+						ProgressEndBuild(false, "Android build failed");
+						return;
+					}//end if
+				}//end using
 			}//end if
 
 			//sanity check
@@ -166,6 +176,8 @@ namespace TriggerCommandLineConsole
 					File.Move(path, movePath);
 					Console.WriteLine(String.Format("Android package created at {0}", movePath));
 				}//end if
+
+				
 			}//end android
 
 			ProgressEndBuild(true, "Build complete");
@@ -189,6 +201,44 @@ namespace TriggerCommandLineConsole
 		private static void ProgressMessage(string msg)
 		{
 			Console.WriteLine(String.Format("##teamcity[progressMessage '{0}']", msg));
+		}
+
+		private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+		{
+			// Get the subdirectories for the specified directory.
+			DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+			DirectoryInfo[] dirs = dir.GetDirectories();
+
+			if (!dir.Exists)
+			{
+				throw new DirectoryNotFoundException(
+					"Source directory does not exist or could not be found: "
+					+ sourceDirName);
+			}
+
+			// If the destination directory doesn't exist, create it. 
+			if (!Directory.Exists(destDirName))
+			{
+				Directory.CreateDirectory(destDirName);
+			}
+
+			// Get the files in the directory and copy them to the new location.
+			FileInfo[] files = dir.GetFiles();
+			foreach (FileInfo file in files)
+			{
+				string temppath = Path.Combine(destDirName, file.Name);
+				file.CopyTo(temppath, false);
+			}
+
+			// If copying subdirectories, copy them and their contents to new location. 
+			if (copySubDirs)
+			{
+				foreach (DirectoryInfo subdir in dirs)
+				{
+					string temppath = Path.Combine(destDirName, subdir.Name);
+					DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+				}
+			}
 		}
 	}
 }
