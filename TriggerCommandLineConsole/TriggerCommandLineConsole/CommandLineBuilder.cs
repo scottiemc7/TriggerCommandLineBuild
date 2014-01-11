@@ -41,12 +41,9 @@ namespace TriggerCommandLineConsole
 		{
 			LastBuildOutput = null;
 
-			if (!Directory.Exists(resources.SDKPath))
-				throw new ArgumentException("Unknown sdk path", "resources.SDKPath");
-			if (!File.Exists(resources.KeystorePath))
-				throw new ArgumentException("Unknown keystore path", "resources.KeystorePath");
+			ValidateAndroidResources(resources);
 
-			string args = String.Format("build android --android.sdk \"{0}\" --android.profile.keystore \"{1}\" --android.profile.keyalias \"{2}\" --android.profile.storepass \"{3}\" --android.profile.keypass \"{4}\"", resources.SDKPath, resources.KeystorePath, resources.KeyAlias, resources.KeystorePassword, resources.KeyPassword);
+			string args = String.Format("build android --username=\"{0}\" --password=\"{1}\" --android.sdk \"{2}\" --android.profile.keystore \"{3}\" --android.profile.keyalias \"{4}\" --android.profile.storepass \"{5}\" --android.profile.keypass \"{6}\"", resources.UserName, resources.Password, resources.SDKPath, resources.KeystorePath, resources.KeyAlias, resources.KeystorePassword, resources.KeyPassword);
 
 			//build app
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
@@ -62,12 +59,9 @@ namespace TriggerCommandLineConsole
 		{
 			LastBuildOutput = null;
 
-			if (!Directory.Exists(resources.SDKPath))
-				throw new ArgumentException("Unknown sdk path", "resources.SDKPath");
-			if (!File.Exists(resources.KeystorePath))
-				throw new ArgumentException("Unknown keystore path", "resources.KeystorePath");
+			ValidateAndroidResources(resources);
 
-			string args = String.Format("package android --android.sdk \"{0}\" --android.profile.keystore \"{1}\" --android.profile.keyalias \"{2}\" --android.profile.storepass \"{3}\" --android.profile.keypass \"{4}\"", resources.SDKPath, resources.KeystorePath, resources.KeyAlias, resources.KeystorePassword, resources.KeyPassword);
+			string args = String.Format("package android --username=\"{0}\" --password=\"{1}\" --android.sdk \"{2}\" --android.profile.keystore \"{3}\" --android.profile.keyalias \"{4}\" --android.profile.storepass \"{5}\" --android.profile.keypass \"{6}\"", resources.UserName, resources.Password, resources.SDKPath, resources.KeystorePath, resources.KeyAlias, resources.KeystorePassword, resources.KeyPassword);
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
 
 			IProcessWrapper proc = _factory.CreateProcess(_forgePath, _srcPath, args);
@@ -89,16 +83,33 @@ namespace TriggerCommandLineConsole
 			}//end if
 		}
 
-		public bool BuildiOS(IOSResources resources)
+		private void ValidateAndroidResources(AndroidResources resources)
 		{
-			LastBuildOutput = null;
+			if (String.IsNullOrEmpty(resources.UserName) || String.IsNullOrEmpty(resources.Password))
+				throw new ArgumentNullException("Username and password required", "resources");
+			if (!Directory.Exists(resources.SDKPath))
+				throw new ArgumentException("Unknown sdk path", "resources.SDKPath");
+			if (!File.Exists(resources.KeystorePath))
+				throw new ArgumentException("Unknown keystore path", "resources.KeystorePath");
+		}
 
+		private void ValidateiOSResources(IOSResources resources)
+		{
+			if (String.IsNullOrEmpty(resources.UserName) || String.IsNullOrEmpty(resources.Password))
+				throw new ArgumentNullException("Username and password required", "resources");
 			if (!File.Exists(resources.ProfilePath))
 				throw new ArgumentException("Unknown profile path", "resources.ProfilePath");
 			if (!File.Exists(resources.CertificatePath))
 				throw new ArgumentException("Unknown certificate path", "resources.CertificatePath");
+		}
 
-			string args = String.Format("build ios --ios.profile.provisioning_profile \"{0}\" --ios.profile.developer_certificate_path \"{1}\" --ios.profile.developer_certificate_password \"{2}\"", resources.ProfilePath, resources.CertificatePath, resources.CertificatePassword);
+		public bool BuildiOS(IOSResources resources)
+		{
+			LastBuildOutput = null;
+
+			ValidateiOSResources(resources);
+
+			string args = String.Format("build ios --username=\"{0}\" --password=\"{1}\"  --ios.profile.provisioning_profile \"{2}\" --ios.profile.developer_certificate_path \"{3}\" --ios.profile.developer_certificate_password \"{4}\"", resources.UserName, resources.Password, resources.ProfilePath, resources.CertificatePath, resources.CertificatePassword);
 
 			//build app
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
@@ -114,12 +125,9 @@ namespace TriggerCommandLineConsole
 		{
 			LastBuildOutput = null;
 
-			if (!File.Exists(resources.ProfilePath))
-				throw new ArgumentException("Unknown profile path", "resources.ProfilePath");
-			if (!File.Exists(resources.CertificatePath))
-				throw new ArgumentException("Unknown certificate path", "resources.CertificatePath");
+			ValidateiOSResources(resources);
 
-			string args = String.Format("package ios --ios.profile.provisioning_profile \"{0}\" --ios.profile.developer_certificate_path \"{1}\" --ios.profile.developer_certificate_password \"{2}\"", resources.ProfilePath, resources.CertificatePath, resources.CertificatePassword);
+			string args = String.Format("package ios --username=\"{0}\" --password=\"{1}\" --ios.profile.provisioning_profile \"{2}\" --ios.profile.developer_certificate_path \"{3}\" --ios.profile.developer_certificate_password \"{4}\"", resources.UserName, resources.Password, resources.ProfilePath, resources.CertificatePath, resources.CertificatePassword);
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
 
 			IProcessWrapper proc = _factory.CreateProcess(_forgePath, _srcPath, args);
@@ -146,6 +154,8 @@ namespace TriggerCommandLineConsole
 
 	public struct AndroidResources
 	{
+		public string UserName { get; set; }
+		public string Password { get; set; }
 		public string SDKPath { get; set; }
 		public string KeystorePath { get; set; }
 		public string KeyAlias { get; set; }
@@ -155,6 +165,8 @@ namespace TriggerCommandLineConsole
 
 	public struct IOSResources
 	{
+		public string UserName { get; set; }
+		public string Password { get; set; }
 		public string CertificatePath { get; set; }
 		public string ProfilePath { get; set; }
 		public string CertificatePassword { get; set; }

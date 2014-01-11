@@ -85,8 +85,8 @@ namespace TriggerCommandLineConsole
 
 			IProcessWrapperFactory fac = new ProcessWrapperFactory();
 			CommandLineBuilder builder = new CommandLineBuilder(fac, fullForgePath, options.SrcPath);
-			IOSResources iosRes = new IOSResources() { CertificatePath = options.iOSCertificatePath, CertificatePassword = options.iOSCertificatePass, ProfilePath = options.iOSProfilePath };
-			AndroidResources andRes = new AndroidResources() { KeyAlias = options.AndroidKeyAlias, KeyPassword = options.AndroidKeyPass, KeystorePassword = options.AndroidKeystorePass, KeystorePath = options.AndroidKeystorePath, SDKPath = options.AndroidSDKPath };
+			IOSResources iosRes = new IOSResources() { CertificatePath = options.iOSCertificatePath, CertificatePassword = options.iOSCertificatePass, ProfilePath = options.iOSProfilePath, UserName = options.Email, Password = options.Password };
+			AndroidResources andRes = new AndroidResources() { KeyAlias = options.AndroidKeyAlias, KeyPassword = options.AndroidKeyPass, KeystorePassword = options.AndroidKeystorePass, KeystorePath = options.AndroidKeystorePath, SDKPath = options.AndroidSDKPath, UserName = options.Email, Password = options.Password };
 
 			//attempt to build before we package or run sanity check
 			if (options.iOS)
