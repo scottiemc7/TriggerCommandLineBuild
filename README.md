@@ -15,7 +15,7 @@ A [TeamCity](http://www.jetbrains.com/teamcity/ "TeamCity") plugin for the [Trig
 #### On the build agent
 1.  Install the [Trigger Toolkit for Windows](https://trigger.io/forge/toolkit/).
 2.  Optionally Install the Android SDK if you plan on building for Android.    
-(Note: If you're running into **'android-platform.apk not found'** issues, check out [this question on stackoverflow](http://stackoverflow.com/questions/27012532/trigger-io-build-error-failed-when-running-aapt-exe-android-platform-apk-not-f).
+(Note: If you're running into **'android-platform.apk not found'** issues, check out [this question on stackoverflow](http://stackoverflow.com/questions/27012532/trigger-io-build-error-failed-when-running-aapt-exe-android-platform-apk-not-f)).
     
 #### On the build server
 1.  Download the latest [triggercommandlinebuild.zip](https://github.com/scottiemc7/TriggerCommandLineBuild/raw/master/triggercommandlinebuild.zip "Plugin").  
