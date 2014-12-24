@@ -92,7 +92,7 @@ namespace TriggerCommandLineConsole
 			if (options.iOS)
 			{
 				ProgressMessage("Begin iOS build");
-				using (DirectoryMover m = new DirectoryMover(options.SrcPath, options.iOSIgnore))
+				using (DirectoryMover m = new DirectoryMover(options.SrcPath.TrimEnd('\\') + "\\src", options.iOSIgnore))
 				{
 					bool ret = builder.BuildiOS(iosRes);
 					Console.WriteLine(builder.LastBuildOutput);
@@ -107,7 +107,7 @@ namespace TriggerCommandLineConsole
 			if (options.Android)
 			{
 				ProgressMessage("Begin Android build");
-				using (DirectoryMover m = new DirectoryMover(options.SrcPath, options.AndroidIgnore))
+                using (DirectoryMover m = new DirectoryMover(options.SrcPath.TrimEnd('\\') + "\\src", options.AndroidIgnore))
 				{
 					bool ret = builder.BuildAndroid(andRes);
 					Console.WriteLine(builder.LastBuildOutput);

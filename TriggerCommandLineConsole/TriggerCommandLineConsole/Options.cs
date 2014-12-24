@@ -25,7 +25,7 @@ namespace TriggerCommandLineConsole
 		[Option('z', "package", Required = true, HelpText = "Package path. Compiled packages will be moved here.", DefaultValue="C:\\")]
 		public string PackagePath { get; set; }
 
-		[Option('s', "src", Required = true, HelpText = "Src path.")]
+		[Option('s', "src", Required = true, HelpText = "Application path. This directory contains your 'src' directory and local_config.json file")]
 		public string SrcPath { get; set; }
 
 		[Option('a', "android", Required = false, HelpText = "Build for Android.")]
