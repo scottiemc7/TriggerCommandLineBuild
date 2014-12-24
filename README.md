@@ -12,7 +12,12 @@ A [TeamCity](http://www.jetbrains.com/teamcity/ "TeamCity") plugin for the [Trig
 +  [Trigger.io Toolkit for Windows](https://trigger.io/forge/toolkit/ "Trigger Toolkit")
 
 ## Plugin Installation: 
-1.  Download [triggercommandlinebuild.zip](https://github.com/scottiemc7/TriggerCommandLineBuild/raw/master/triggercommandlinebuild.zip "Plugin")  
+#### On the build agent
+1.  Install the [Trigger Toolkit for Windows](https://trigger.io/forge/toolkit/).
+2.  Optionally Install the Android SDK if you plan on building for Android.  
+    
+#### On the build server
+1.  Download the latest [triggercommandlinebuild.zip](https://github.com/scottiemc7/TriggerCommandLineBuild/raw/master/triggercommandlinebuild.zip "Plugin").  
 2.  Shutdown the TeamCity server.  
 3.  Copy the zip archive with the plugin into the <TeamCity Data Directory>/plugins directory.  
 4.  Start the TeamCity server: the plugin files will be unpacked and processed automatically.  
