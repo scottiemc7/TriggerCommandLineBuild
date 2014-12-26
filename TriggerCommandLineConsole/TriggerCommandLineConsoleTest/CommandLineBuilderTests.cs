@@ -59,7 +59,7 @@ namespace TriggerCommandLineConsoleTest
 			mockProcessFactory.Setup(a => a.CreateProcess(It.Is<String>(s => s == _fakeForgePath), It.Is<String>(s => s == _pathThatExists1), It.IsAny<String>())).Returns(mockProcess.Object);
 			mockProcess.Setup(p => p.GetStandardErrorOutput()).Returns(TriggerCommandLineConsoleTest.Properties.Resources.GOODBUILD);
 
-			IOSResources iosRes = new IOSResources() { CertificatePassword = "fakepass", CertificatePath = _iosCertPath, ProfilePath = _iosProfilePath };
+            IOSResources iosRes = new IOSResources() { UserName = "testuser@test.user", Password = "testpass", CertificatePassword = "fakepass", CertificatePath = _iosCertPath, ProfilePath = _iosProfilePath };
 			CommandLineBuilder builder = new CommandLineBuilder(mockProcessFactory.Object, _fakeForgePath, _pathThatExists1);
 
 			Assert.IsTrue(builder.BuildiOS(iosRes));
@@ -79,7 +79,7 @@ namespace TriggerCommandLineConsoleTest
 			mockProcessFactory.Setup(a => a.CreateProcess(It.Is<String>(s => s == _fakeForgePath), It.Is<String>(s => s == _pathThatExists1), It.IsAny<String>())).Returns(mockProcess.Object);
 			mockProcess.Setup(p => p.GetStandardErrorOutput()).Returns(TriggerCommandLineConsoleTest.Properties.Resources.GOODIOSPACKAGE);
 
-			IOSResources iosRes = new IOSResources() { CertificatePassword = "fakepass", CertificatePath = _iosCertPath, ProfilePath = _iosProfilePath };
+            IOSResources iosRes = new IOSResources() { UserName = "testuser@test.user", Password = "testpass", CertificatePassword = "fakepass", CertificatePath = _iosCertPath, ProfilePath = _iosProfilePath };
 			CommandLineBuilder builder = new CommandLineBuilder(mockProcessFactory.Object, _fakeForgePath, _pathThatExists1);
 
 			Assert.IsNotNull(builder.PackageiOS(iosRes));
@@ -99,7 +99,7 @@ namespace TriggerCommandLineConsoleTest
 			mockProcessFactory.Setup(a => a.CreateProcess(It.Is<String>(s => s == _fakeForgePath), It.Is<String>(s => s == _pathThatExists1), It.IsAny<String>())).Returns(mockProcess.Object);
 			mockProcess.Setup(p => p.GetStandardErrorOutput()).Returns(TriggerCommandLineConsoleTest.Properties.Resources.GOODBUILD);
 
-			AndroidResources andRes = new AndroidResources() { SDKPath = _pathThatExists2, KeystorePath = _andKeystorePath, KeyAlias = "keyalias", KeyPassword = "keypass", KeystorePassword = "keystorepass" };
+			AndroidResources andRes = new AndroidResources() { UserName="testuser@test.user", Password="testpass", SDKPath = _pathThatExists2, KeystorePath = _andKeystorePath, KeyAlias = "keyalias", KeyPassword = "keypass", KeystorePassword = "keystorepass" };
 			CommandLineBuilder builder = new CommandLineBuilder(mockProcessFactory.Object, _fakeForgePath, _pathThatExists1);
 
 			Assert.IsTrue(builder.BuildAndroid(andRes));
@@ -119,7 +119,7 @@ namespace TriggerCommandLineConsoleTest
 			mockProcessFactory.Setup(a => a.CreateProcess(It.Is<String>(s => s == _fakeForgePath), It.Is<String>(s => s == _pathThatExists1), It.IsAny<String>())).Returns(mockProcess.Object);
 			mockProcess.Setup(p => p.GetStandardErrorOutput()).Returns(TriggerCommandLineConsoleTest.Properties.Resources.GOODANDPACKAGE);
 
-			AndroidResources andRes = new AndroidResources() { SDKPath = _pathThatExists2, KeystorePath = _andKeystorePath, KeyAlias = "keyalias", KeyPassword = "keypass", KeystorePassword = "keystorepass" };
+            AndroidResources andRes = new AndroidResources() { UserName = "testuser@test.user", Password = "testpass", SDKPath = _pathThatExists2, KeystorePath = _andKeystorePath, KeyAlias = "keyalias", KeyPassword = "keypass", KeystorePassword = "keystorepass" };
 			CommandLineBuilder builder = new CommandLineBuilder(mockProcessFactory.Object, _fakeForgePath, _pathThatExists1);
 
 			Assert.IsNotNull(builder.PackageAndroid(andRes));

@@ -64,6 +64,15 @@ namespace TriggerCommandLineConsole
 		[Option('q', "iosignore", Required = false, HelpText = "List of directories to ignore when building for iOS. Relative to src, seperated by ;")]
 		public string iOSIgnore { get; set; }
 
+        [Option('b', "configkeys", Required = false, HelpText = "Configuration Key/Value Pairs")]
+        public string ConfigKeys { get; set; }
+
+        [Option('v', "iosname", Required = false, HelpText = "iOS Package Name")]
+        public string iOSPackageName { get; set; }
+
+        [Option('w', "androidname", Required = false, HelpText = "Android Package Name")]
+        public string AndroidPackageName { get; set; }
+
 		[ParserState]
 		public IParserState LastParserState { get; set; }
 

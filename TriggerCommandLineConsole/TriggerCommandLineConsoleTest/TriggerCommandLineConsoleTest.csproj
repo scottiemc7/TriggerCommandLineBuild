@@ -62,6 +62,7 @@
     <Compile Include="SanityCheckTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandLineBuilderTests.cs" />
+    <Compile Include="JSONValueSwapperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TriggerCommandLineConsole\TriggerCommandLineConsole.csproj">

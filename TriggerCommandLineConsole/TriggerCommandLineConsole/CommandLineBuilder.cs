@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace TriggerCommandLineConsole
 {
@@ -19,6 +18,9 @@ namespace TriggerCommandLineConsole
 		readonly string _forgePath;
 		readonly string _srcPath;
 
+        public delegate void BuildMessageEventHandler(string message);
+        public event BuildMessageEventHandler BuildMessageReceived;
+        
 		public CommandLineBuilder(IProcessWrapperFactory fac, string forgePath, string pathToSource)
 		{
 			if (fac == null)
@@ -37,6 +39,13 @@ namespace TriggerCommandLineConsole
 			_srcPath = pathToSource;
 		}
 
+        private void ProcessOutputRecieved(object o, DataReceivedEventArgs e)
+        {
+            //just forward it on
+            if (BuildMessageReceived != null)
+                BuildMessageReceived(e.Data);
+        }
+
 		public bool BuildAndroid(AndroidResources resources)
 		{
 			LastBuildOutput = null;
@@ -48,6 +57,8 @@ namespace TriggerCommandLineConsole
 			//build app
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
 			IProcessWrapper buildProc = _factory.CreateProcess(_forgePath, _srcPath, args);
+            if(BuildMessageReceived != null)
+                buildProc.SetOutputHandler(ProcessOutputRecieved);
 			buildProc.Run();
 			LastBuildOutput = buildProc.GetStandardErrorOutput();
 
@@ -65,6 +76,8 @@ namespace TriggerCommandLineConsole
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
 
 			IProcessWrapper proc = _factory.CreateProcess(_forgePath, _srcPath, args);
+            if (BuildMessageReceived != null)
+                proc.SetOutputHandler(ProcessOutputRecieved);
 			proc.Run();
 			LastBuildOutput = proc.GetStandardErrorOutput();
 
@@ -114,6 +127,8 @@ namespace TriggerCommandLineConsole
 			//build app
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
 			IProcessWrapper buildProc = _factory.CreateProcess(_forgePath, _srcPath, args);
+            if (BuildMessageReceived != null)
+                buildProc.SetOutputHandler(ProcessOutputRecieved);
 			buildProc.Run();
 			LastBuildOutput = buildProc.GetStandardErrorOutput();
 
@@ -131,6 +146,8 @@ namespace TriggerCommandLineConsole
 			Debug.WriteLine(String.Format("Calling forge.exe {0}", args));
 
 			IProcessWrapper proc = _factory.CreateProcess(_forgePath, _srcPath, args);
+            if (BuildMessageReceived != null)
+                proc.SetOutputHandler(ProcessOutputRecieved);
 			proc.Run();
 			LastBuildOutput = proc.GetStandardErrorOutput();
 

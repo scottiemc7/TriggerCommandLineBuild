@@ -20,4 +20,7 @@ public interface iPluginConstants {
     String PROPERTYKEY_IOSCERTIFICATEPASSWORD = "tsa.ioscertpass";
     String PROPERTYKEY_IOSPROFILEPATH = "tsa.iosprofile";
     String PROPERTYKEY_IOSIGNOREPATH = "tsa.iosignore";
+    String PROPERTYKEY_CONFIGKEYS = "tsa.configkeys";
+    String PROPERTYKEY_ANDROIDPACKAGENAME = "tsa.andpackage";
+    String PROPERTYKEY_IOSPACKAGENAME = "tsa.iospackage";
 }

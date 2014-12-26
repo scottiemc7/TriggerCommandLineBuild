@@ -5,12 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TriggerCommandLineConsole
 {
 	class Program
 	{
+        const string EMPTYCONFIG_JSON = "{ \"android\": { \"profiles\": { \"DEFAULT\": { \"keystore\": \"\", \"keypass\": \"\", \"keyalias\": \"\", \"storepass\": \"\" } }, \"sdk\": \"\" }, \"ios\": { \"simulatorsdk\": \"7.1\", \"simulatorfamily\": \"iphone\", \"profiles\": { \"DEFAULT\": { \"provisioning_profile\": \"\", \"developer_certificate_path\": \"\", \"developer_certificate_password\": \"\" } }, \"device\": \"device\", \"simulatorvariant\": \"default\" }}";
+
 		static void Main(string[] args)
 		{
 			ProgressBeginBuild();
@@ -88,6 +91,32 @@ namespace TriggerCommandLineConsole
 			IOSResources iosRes = new IOSResources() { CertificatePath = options.iOSCertificatePath, CertificatePassword = options.iOSCertificatePass, ProfilePath = options.iOSProfilePath, UserName = options.Email, Password = options.Password };
 			AndroidResources andRes = new AndroidResources() { KeyAlias = options.AndroidKeyAlias, KeyPassword = options.AndroidKeyPass, KeystorePassword = options.AndroidKeystorePass, KeystorePath = options.AndroidKeystorePath, SDKPath = options.AndroidSDKPath, UserName = options.Email, Password = options.Password };
 
+            //create an empty local_config.json file - exe won't package without it now
+            File.WriteAllText(options.SrcPath.TrimEnd('\\') + "\\local_config.json", EMPTYCONFIG_JSON);
+
+            //write all output to the console
+            builder.BuildMessageReceived += delegate(string msg) { Console.WriteLine(msg); };
+
+            //swap out config keys, if necessary
+            if (!String.IsNullOrEmpty(options.ConfigKeys))
+            {
+                string configPath = options.SrcPath.TrimEnd('\\') +"\\src\\config.json";
+                Console.WriteLine(String.Format("config.json path: {0}", configPath));
+                IJSONValueSwapper swapper = new JSONValueSwapper(File.ReadAllText(configPath));
+                string[] keyPairs = options.ConfigKeys.Split(';');
+                foreach (string keyPair in keyPairs)
+                {
+                    string[] keyAndValue = keyPair.Split(',');
+                    if (keyAndValue.Length == 2)
+                    {
+                        Console.WriteLine(String.Format("Swapping value {0} for key {1} in config.json", keyAndValue[1], keyAndValue[0]));
+                        swapper.Swap(keyAndValue[0], keyAndValue[1]);
+                    }//end if
+                }//end foreach
+
+                File.WriteAllText(configPath, swapper.ToString());
+            }//end if
+
 			//attempt to build before we package or run sanity check
 			if (options.iOS)
 			{
@@ -140,7 +169,7 @@ namespace TriggerCommandLineConsole
 			{
 				ProgressMessage("Begin iOS packaging");
 				string path = builder.PackageiOS(iosRes);
-				Console.WriteLine(builder.LastBuildOutput);
+				//Console.WriteLine(builder.LastBuildOutput);
 
 				if (String.IsNullOrEmpty(path))
 				{
@@ -149,7 +178,7 @@ namespace TriggerCommandLineConsole
 				}
 				else
 				{
-					string movePath = String.Format("{0}\\ios.ipa", options.PackagePath);
+                    string movePath = String.Format("{0}\\{1}.ipa", options.PackagePath, String.IsNullOrEmpty(options.iOSPackageName) ? "ios" : options.iOSPackageName);
 					if(File.Exists(movePath))
 						File.Delete(movePath);
 					File.Move(path, movePath);
@@ -170,7 +199,7 @@ namespace TriggerCommandLineConsole
 				}
 				else
 				{
-					string movePath = String.Format("{0}\\android.apk", options.PackagePath);
+                    string movePath = String.Format("{0}\\{1}.apk", options.PackagePath, String.IsNullOrEmpty(options.AndroidPackageName) ? "android" : options.AndroidPackageName);
 					if(File.Exists(movePath))
 						File.Delete(movePath);
 					File.Move(path, movePath);
@@ -194,6 +223,9 @@ namespace TriggerCommandLineConsole
 
 		private static void ProgressEndBuild(bool success, string msg)
 		{
+            if (!success)
+                Console.WriteLine(String.Format("##teamcity[buildProblem description='{0}' identity='{1}']", msg, Guid.NewGuid().ToString()));
+
 			Console.WriteLine(String.Format("##teamcity[progressFinish 'Build Finished With {0}']", success ? "SUCCESS" : "FAILURE"));
 			Console.WriteLine(String.Format("##teamcity[buildStatus status='{1}' text='{0}']", msg, success ? "SUCCESS" : "FAILURE"));
 		}
