@@ -16,7 +16,7 @@ namespace TriggerCommandLineConsole
             _jsonObject = _serializer.DeserializeObject(json) as Dictionary<string, object>;
         }
 
-        public void Swap(string key, string newValue)
+        public void Swap(string key, dynamic newValue)
         {
             string[] keys = key.Split('\\');
             Dictionary<string, object> dictEntry = _jsonObject;
@@ -32,7 +32,7 @@ namespace TriggerCommandLineConsole
 
             if (!dictEntry.ContainsKey(keys[keys.Length - 1]))
                 throw new ArgumentException("Unknown key");
-
+            
             dictEntry[keys[keys.Length - 1]] = newValue;
         }
 

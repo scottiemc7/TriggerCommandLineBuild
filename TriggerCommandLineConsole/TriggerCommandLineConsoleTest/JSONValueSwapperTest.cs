@@ -28,6 +28,20 @@ namespace TriggerCommandLineConsoleTest
             Assert.AreEqual(JSONAfter, swapper.ToString());
         }
 
+        [TestMethod]
+        public void PrimativeTypeValuesAreNotWrappedInQuotes()
+        {
+            string jsonBefore = "{\"test_string\":\"beforeValue\",\"test_number\":1,\"test_bool\":true}",
+                jsonAfter = "{\"test_string\":\"afterValue\",\"test_number\":2,\"test_bool\":false}";
+
+            IJSONValueSwapper swapper = new JSONValueSwapper(jsonBefore);
+            swapper.Swap("test_string", "afterValue");
+            swapper.Swap("test_number", 2);
+            swapper.Swap("test_bool", false);
+
+            Assert.AreEqual(jsonAfter, swapper.ToString());
+        }
+
 
         [TestMethod]
         public void TestSwapFail()

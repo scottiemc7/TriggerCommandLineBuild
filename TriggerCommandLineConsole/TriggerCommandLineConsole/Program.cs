@@ -109,8 +109,9 @@ namespace TriggerCommandLineConsole
                     string[] keyAndValue = keyPair.Split(',');
                     if (keyAndValue.Length == 2)
                     {
-                        Console.WriteLine(String.Format("Swapping value {0} for key {1} in config.json", keyAndValue[1], keyAndValue[0]));
-                        swapper.Swap(keyAndValue[0], keyAndValue[1]);
+                        dynamic jsonVal = ProcessJSONValue(keyAndValue[1]);
+                        Console.WriteLine(String.Format("Swapping value {0} for key {1} in config.json", keyAndValue[1], jsonVal));
+                        swapper.Swap(keyAndValue[0], jsonVal);
                     }//end if
                 }//end foreach
 
@@ -215,6 +216,47 @@ namespace TriggerCommandLineConsole
 			Console.ReadLine();
 #endif
 		}
+
+        private static dynamic ProcessJSONValue(string value)
+        {
+            value = value.Trim();
+
+            if (value.StartsWith("\"") || value.StartsWith("'"))
+            {
+                return value;
+            }
+            else if (String.Compare(value, "true", false) == 0 || String.Compare(value, "false", false) == 0)
+            {
+                return Boolean.Parse(value);
+            }
+            else
+            {
+                if (value.Contains("."))
+                {
+                    double doubleVal = 0;
+                    if (Double.TryParse(value, out doubleVal))
+                    {
+                        return doubleVal;
+                    }
+                    else
+                    {
+                        return value; //give up, return string value back
+                    }
+                }
+                else
+                {
+                    long intVal = 0;
+                    if (Int64.TryParse(value, out intVal))
+                    {
+                        return intVal;
+                    }
+                    else
+                    {
+                        return value; //give up, return string value back
+                    }
+                }
+            }
+        }
 
 		private static void ProgressBeginBuild()
 		{

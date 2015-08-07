@@ -7,6 +7,6 @@ namespace TriggerCommandLineConsole
 {
     public interface IJSONValueSwapper
     {
-        void Swap(string key, string newValue);
+        void Swap(string key, dynamic newValue);
     }
 }
